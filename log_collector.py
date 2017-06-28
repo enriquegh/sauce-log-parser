@@ -1,7 +1,8 @@
 """Gets log from Sauce Labs"""
 
-import httplib2
 import base64
+import httplib2
+
 
 URL_BASE = "https://saucelabs.com/rest/v1/{username}/jobs/{job_id}/assets/log.json"
 
@@ -19,5 +20,3 @@ def get_log(admin, access_key, username, job_id):
     _, response = http_conn.request(url, method="GET", headers=headers)
 
     print response
-
-
