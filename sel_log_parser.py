@@ -1,12 +1,12 @@
 """Parse Sauce Labs log messages and analyze commands"""
 from __future__ import print_function
 import json
-import sys
 import re
 import os
 import os.path
 import argparse
 from log_collector import get_log
+import glob
 
 
 def mean(num_list):
@@ -43,16 +43,13 @@ def read_log(log_name, command):
     print("  min is {}".format(min(commands)))
     print("  total is {}".format(total(commands)))
 
-def examine_job(log_name):
+def examine_job(job_id):
     """Parses job id from log name"""
-    search_query = re.search(r'_(.+?)\.', log_name)
-    if search_query:
-        job_id = search_query.group(1)
-    else:
-        exit("Log name is not in the order log_JOB_ID.something")
-
-    if not os.path.exists(log_name):
-        get_log("ADMIN", "ACCESS_KEY", "USERNAME", job_id)
+    file = glob.glob('log_{}.*'.format(job_id))
+    log_name = file[0]
+    # TODO: Move to main()
+    # if not os.path.exists(log_name):
+    #     get_log("ADMIN", "ACCESS_KEY", "USERNAME", job_id)
     print("test id: {}".format(job_id))
     print("Duration:")
     read_log(log_name, "duration")
@@ -60,14 +57,20 @@ def examine_job(log_name):
     read_log(log_name, "between_commands")
     print("")
 
+def is_log_downloaded(job_id):
+    file = glob.glob('log_{}.*'.format(job_id))
+    if file:
+        return True
+    return False
+
 def main():
     """Main function"""
     # For now, format MUST be in the order log_JOB_ID.something
-    if len(sys.argv) <= 1:
-        print("Please enter files to examine")
-    else:
-        for i in range(1, len(sys.argv)):
-            examine_job(sys.argv[i])
+    # if len(sys.argv) <= 1:
+    #     print("Please enter files to examine")
+    # else:
+    #     for i in range(1, len(sys.argv)):
+    #         examine_job(sys.argv[i])
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
@@ -77,9 +80,20 @@ def main():
 
     args = arg_parser.parse_args()
 
+    #TODO: This can be optimized somehow
+    # if not args.user:
+    #     args.user = os.environ.get('SAUCE_USERNAME')
+    #     if not args.user:
+    #         args.user = raw_input("Please specify a username: ")
+    for job in args.job_id:
+        print(job)
+        if is_log_downloaded(job_id):
+            exa
+
 
     #TODO: use argparse to create a ArgumentParser
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    print(is_log_downloaded("08eb95664a784406x89762340a2419717"))
