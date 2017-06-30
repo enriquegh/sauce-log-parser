@@ -11,7 +11,6 @@ def get_log(admin, access_key, username, job_id):
     "Obtain log with username and job_id"
 
     url = URL_BASE.format(username=username, job_id=job_id)
-    print url
     log_name = "log_{}.log".format(job_id)
     http_conn = httplib2.Http()
     # http_conn.add_credentials(admin, access_key)
@@ -22,4 +21,3 @@ def get_log(admin, access_key, username, job_id):
 
     with open(log_name, 'w') as log:
         log.write(response)
-    print response
