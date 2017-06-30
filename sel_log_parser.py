@@ -1,12 +1,11 @@
 """Parse Sauce Labs log messages and analyze commands"""
 from __future__ import print_function
 import json
-import re
 import os
 import os.path
 import argparse
-from log_collector import get_log
 import glob
+from log_collector import get_log
 
 
 def mean(num_list):
@@ -45,11 +44,9 @@ def read_log(log_name, command):
 
 def examine_job(job_id):
     """Parses job id from log name"""
-    file = glob.glob('log_{}.*'.format(job_id))
-    log_name = file[0]
-    # TODO: Move to main()
-    # if not os.path.exists(log_name):
-    #     get_log("ADMIN", "ACCESS_KEY", "USERNAME", job_id)
+    files = glob.glob('log_{}.*'.format(job_id))
+    log_name = files[0]
+
     print("test id: {}".format(job_id))
     print("Duration:")
     read_log(log_name, "duration")
@@ -58,19 +55,14 @@ def examine_job(job_id):
     print("")
 
 def is_log_downloaded(job_id):
-    file = glob.glob('log_{}.*'.format(job_id))
-    if file:
+    """Checks if log exists in folder"""
+    files = glob.glob('log_{}.*'.format(job_id))
+    if files:
         return True
     return False
 
 def main():
     """Main function"""
-    # For now, format MUST be in the order log_JOB_ID.something
-    # if len(sys.argv) <= 1:
-    #     print("Please enter files to examine")
-    # else:
-    #     for i in range(1, len(sys.argv)):
-    #         examine_job(sys.argv[i])
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
@@ -87,18 +79,16 @@ def main():
         args.access_key = os.environ.get('SAUCE_ACCESS_KEY')
 
     for job in args.job_id:
-        print(job)
         if is_log_downloaded(job):
-            examine_job(job)
+            pass
         else:
             #NEED TO HAVE ADMIN USER AND ACCESS_KEY
             if args.user and args.access_key and args.admin:
-                print("We can't download logs just yet. :/")
+                get_log(args.admin, args.access_key, args.user, job)
             else:
                 print("Can't download log without credentials")
 
-
-    #TODO: use argparse to create a ArgumentParser
+        examine_job(job)
 
 
 if __name__ == '__main__':
