@@ -13,7 +13,7 @@ def mean(num_list):
         num_sum += item
         i += 1
 
-    return sum/i
+    return num_sum/i
 
 def total(num_list):
     """Calculates total of a list"""
