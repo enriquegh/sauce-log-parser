@@ -3,6 +3,9 @@ from __future__ import print_function
 import json
 import sys
 import re
+import os
+import os.path
+from log_collector import get_log
 
 
 def mean(num_list):
@@ -46,6 +49,9 @@ def examine_job(log_name):
         job_id = search_query.group(1)
     else:
         exit("Log name is not in the order log_JOB_ID.something")
+
+    if not os.path.exists(log_name):
+        get_log("ADMIN", "ACCESS_KEY", "USERNAME", job_id)
     print("test id: {}".format(job_id))
     print("Duration:")
     read_log(log_name, "duration")
@@ -62,8 +68,6 @@ def main():
         for i in range(1, len(sys.argv)):
             examine_job(sys.argv[i])
 
-    #TODO: Download log automatically
-    #https://saucelabs.com/rest/v1/SAUCE_USERNAME/jobs/JOB_ID/assets/log.json
 
     #TODO: use argparse to create a ArgumentParser
 
