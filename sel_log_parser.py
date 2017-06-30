@@ -80,20 +80,26 @@ def main():
 
     args = arg_parser.parse_args()
 
-    #TODO: This can be optimized somehow
-    # if not args.user:
-    #     args.user = os.environ.get('SAUCE_USERNAME')
-    #     if not args.user:
-    #         args.user = raw_input("Please specify a username: ")
+
+    if not args.user:
+        args.user = os.environ.get('SAUCE_USERNAME')
+    if not args.access_key:
+        args.access_key = os.environ.get('SAUCE_ACCESS_KEY')
+
     for job in args.job_id:
         print(job)
-        if is_log_downloaded(job_id):
-            exa
+        if is_log_downloaded(job):
+            examine_job(job)
+        else:
+            #NEED TO HAVE ADMIN USER AND ACCESS_KEY
+            if args.user and args.access_key and args.admin:
+                print("We can't download logs just yet. :/")
+            else:
+                print("Can't download log without credentials")
 
 
     #TODO: use argparse to create a ArgumentParser
 
 
 if __name__ == '__main__':
-    # main()
-    print(is_log_downloaded("08eb95664a784406x89762340a2419717"))
+    main()
