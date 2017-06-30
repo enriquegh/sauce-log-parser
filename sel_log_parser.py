@@ -5,6 +5,7 @@ import sys
 import re
 import os
 import os.path
+import argparse
 from log_collector import get_log
 
 
@@ -67,6 +68,14 @@ def main():
     else:
         for i in range(1, len(sys.argv)):
             examine_job(sys.argv[i])
+
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
+    arg_parser.add_argument("-u", "--user", help="Sauce username")
+    arg_parser.add_argument("-k", "--access_key", help="Sauce access key")
+    arg_parser.add_argument("job_id", nargs="+", help="Job id to be examined")
+
+    args = arg_parser.parse_args()
 
 
     #TODO: use argparse to create a ArgumentParser
