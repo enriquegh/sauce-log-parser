@@ -86,7 +86,7 @@ def main():
             if args.user and args.access_key and args.admin:
                 get_log(args.admin, args.access_key, args.user, job)
             else:
-                print("Can't download log without credentials")
+                exit("Can't download job id {} without credentials".format(job))
 
         examine_job(job)
 
