@@ -66,8 +66,8 @@ def main():
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
+    arg_parser.add_argument("-k", "--access_key", help="Sauce admin access key")
     arg_parser.add_argument("-u", "--user", help="Sauce username")
-    arg_parser.add_argument("-k", "--access_key", help="Sauce access key")
     arg_parser.add_argument("job_id", nargs="+", help="Job id to be examined")
 
     args = arg_parser.parse_args()
@@ -86,8 +86,7 @@ def main():
             if args.user and args.access_key and args.admin:
                 get_log(args.admin, args.access_key, args.user, job)
             else:
-                exit("Can't download job id {} without credentials".format(job))
-
+                print("Can't download job id {} without credentials".format(job))
         examine_job(job)
 
 
