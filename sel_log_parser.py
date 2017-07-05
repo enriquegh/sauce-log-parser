@@ -1,10 +1,10 @@
 """Parse Sauce Labs log messages and analyze commands"""
 from __future__ import print_function
 import json
-import sys
-import re
 import os
 import os.path
+import argparse
+import glob
 from log_collector import get_log
 
 
@@ -42,16 +42,11 @@ def read_log(log_name, command):
     print("  min is {}".format(min(commands)))
     print("  total is {}".format(total(commands)))
 
-def examine_job(log_name):
+def examine_job(job_id):
     """Parses job id from log name"""
-    search_query = re.search(r'_(.+?)\.', log_name)
-    if search_query:
-        job_id = search_query.group(1)
-    else:
-        exit("Log name is not in the order log_JOB_ID.something")
+    files = glob.glob('log_{}.*'.format(job_id))
+    log_name = files[0]
 
-    if not os.path.exists(log_name):
-        get_log("ADMIN", "ACCESS_KEY", "USERNAME", job_id)
     print("test id: {}".format(job_id))
     print("Duration:")
     read_log(log_name, "duration")
@@ -59,17 +54,40 @@ def examine_job(log_name):
     read_log(log_name, "between_commands")
     print("")
 
+def is_log_downloaded(job_id):
+    """Checks if log exists in folder"""
+    files = glob.glob('log_{}.*'.format(job_id))
+    if files:
+        return True
+    return False
+
 def main():
     """Main function"""
-    # For now, format MUST be in the order log_JOB_ID.something
-    if len(sys.argv) <= 1:
-        print("Please enter files to examine")
-    else:
-        for i in range(1, len(sys.argv)):
-            examine_job(sys.argv[i])
+
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
+    arg_parser.add_argument("-k", "--access_key", help="Sauce admin access key")
+    arg_parser.add_argument("-u", "--user", help="Sauce username")
+    arg_parser.add_argument("job_id", nargs="+", help="Job id to be examined")
+
+    args = arg_parser.parse_args()
 
 
-    #TODO: use argparse to create a ArgumentParser
+    if not args.user:
+        args.user = os.environ.get('SAUCE_USERNAME')
+    if not args.access_key:
+        args.access_key = os.environ.get('SAUCE_ACCESS_KEY')
+
+    for job in args.job_id:
+        if is_log_downloaded(job):
+            pass
+        else:
+            #NEED TO HAVE ADMIN USER AND ACCESS_KEY
+            if args.user and args.access_key and args.admin:
+                get_log(args.admin, args.access_key, args.user, job)
+            else:
+                print("Can't download job id {} without credentials".format(job))
+        examine_job(job)
 
 
 if __name__ == '__main__':
