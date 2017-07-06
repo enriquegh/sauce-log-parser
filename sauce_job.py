@@ -31,13 +31,16 @@ class Job(object):
     def read_log(self, command):
         """Reads in a log and returns a list of all the command values"""
         commands = []
+        results = {}
 
         for log in self.data:
             curr_command = log[command]
             if curr_command != None:
                 commands.append(curr_command)
 
-        print "  mean is {}".format(sel.mean(commands))
-        print "  max is {}".format(max(commands))
-        print "  min is {}".format(min(commands))
-        print "  total is {}".format(sel.total(commands))
+        results["mean"] = sel.mean(commands)
+        results["max"] = max(commands)
+        results["min"] = max(commands)
+        results["total"] = sel.total(commands)
+
+        return results
