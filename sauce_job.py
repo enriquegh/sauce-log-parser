@@ -1,8 +1,7 @@
 """Created objects needed for Sauce logs"""
 
-import log_collector
-import sel_log_parser as sel
 import json
+import log_collector
 
 class Job(object):
     """docstring for Job."""
@@ -24,12 +23,13 @@ class Job(object):
         return self.between_commands
 
     def fetch_log(self, admin, access_key, username):
+        """Downloads log"""
         response = log_collector.get_log(admin, access_key, username, self.job_id, write=False)
         if response is not None:
             self.data = json.loads(response)
 
     def read_log(self, command):
-        """Reads in a log and returns a list of all the command values"""
+        """Reads data and returns max, min, mean and total"""
         commands = []
         results = {}
 
@@ -38,9 +38,28 @@ class Job(object):
             if curr_command != None:
                 commands.append(curr_command)
 
-        results["mean"] = sel.mean(commands)
+        results["mean"] = Job.mean(commands)
         results["max"] = max(commands)
-        results["min"] = max(commands)
-        results["total"] = sel.total(commands)
+        results["min"] = min(commands)
+        results["total"] = Job.total(commands)
 
         return results
+
+    @staticmethod
+    def mean(num_list):
+        """Calculates mean of a list"""
+        i = 0
+        num_sum = 0.0
+        for item in num_list:
+            num_sum += item
+            i += 1
+
+        return num_sum/i
+
+    @staticmethod
+    def total(num_list):
+        """Calculates total of a list"""
+        num_sum = 0.0
+        for item in num_list:
+            num_sum += item
+        return num_sum
