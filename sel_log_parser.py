@@ -5,7 +5,7 @@ import os
 import os.path
 import argparse
 import glob
-from log_collector import get_log
+import sauce_job
 
 
 def mean(num_list):
@@ -83,10 +83,15 @@ def main():
             pass
         else:
             #NEED TO HAVE ADMIN USER AND ACCESS_KEY
+            # Will create a Job instance
+
             if args.user and args.access_key and args.admin:
-                get_log(args.admin, args.access_key, args.user, job)
+                job_instance = sauce_job.Job(job)
+                job_instance.fetch_log(args.admin, args.access_key, args.user, True)
+
             else:
-                print("Can't download job id {} without credentials".format(job))
+                print("Can't download job id {} without credentials. Please try again".format(job))
+                continue
         examine_job(job)
 
 
