@@ -22,9 +22,9 @@ class Job(object):
         """Returns the duration dict"""
         return self.between_commands
 
-    def fetch_log(self, admin, access_key, username):
+    def fetch_log(self, admin, access_key, username, write):
         """Downloads log"""
-        response = log_collector.get_log(admin, access_key, username, self.job_id, write=False)
+        response = log_collector.get_log(admin, access_key, username, self.job_id, write)
         if response is not None:
             self.data = json.loads(response)
 
