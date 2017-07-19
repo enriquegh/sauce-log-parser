@@ -25,10 +25,9 @@ class Job(object):
     def fetch_log(self, admin, access_key, username, write):
         """Downloads log"""
         response = log_collector.get_log(admin, access_key, username, self.job_id, write)
-        if response is not None:
-            self.data = json.loads(response)
+        self.data = json.loads(response)
 
-    def read_log(self, command):
+    def read_data(self, command):
         """Reads data and returns max, min, mean and total"""
         commands = []
         results = {}
@@ -44,6 +43,27 @@ class Job(object):
         results["total"] = Job.total(commands)
 
         return results
+
+    @staticmethod
+    def print_results(results):
+        "Prints results dict with the desired calculations"
+        print "  mean is {}".format(results["mean"])
+        print "  max is {}".format(results["max"])
+        print "  min is {}".format(results["min"])
+        print "  total is {}".format(results["total"])
+
+    def examine_job(self):
+        """Gets information from data"""
+
+        duration = self.read_data("duration")
+        between_commands = self.read_data("between_commands")
+
+        print "test id: {}".format(self.job_id)
+        print "Duration:"
+        Job.print_results(duration)
+        print "between_commands:"
+        Job.print_results(between_commands)
+        print ""
 
     @staticmethod
     def mean(num_list):

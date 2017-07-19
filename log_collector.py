@@ -21,5 +21,4 @@ def get_log(admin, access_key, username, job_id, write=False):
     if write:
         with open(log_name, 'w') as log:
             log.write(response)
-        return None
     return response

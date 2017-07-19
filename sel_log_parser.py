@@ -80,7 +80,7 @@ def main():
 
     for job in args.job_id:
         if is_log_downloaded(job):
-            pass
+            examine_job(job)
         else:
             #NEED TO HAVE ADMIN USER AND ACCESS_KEY
             # Will create a Job instance
@@ -88,11 +88,10 @@ def main():
             if args.user and args.access_key and args.admin:
                 job_instance = sauce_job.Job(job)
                 job_instance.fetch_log(args.admin, args.access_key, args.user, True)
+                job_instance.examine_job()
 
             else:
                 print("Can't download job id {} without credentials. Please try again".format(job))
-                continue
-        examine_job(job)
 
 
 if __name__ == '__main__':
