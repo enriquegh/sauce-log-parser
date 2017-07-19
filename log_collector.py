@@ -7,7 +7,7 @@ import httplib2
 URL_BASE = "https://saucelabs.com/rest/v1/{username}/jobs/{job_id}/assets/log.json"
 
 
-def get_log(admin, access_key, username, job_id):
+def get_log(admin, access_key, username, job_id, write=False):
     "Obtain log with username and job_id"
 
     url = URL_BASE.format(username=username, job_id=job_id)
@@ -18,6 +18,7 @@ def get_log(admin, access_key, username, job_id):
     headers = {'Authorization' : 'Basic {}'.format(user_pass)}
     _, response = http_conn.request(url, method="GET", headers=headers)
 
-
-    with open(log_name, 'w') as log:
-        log.write(response)
+    if write:
+        with open(log_name, 'w') as log:
+            log.write(response)
+    return response
