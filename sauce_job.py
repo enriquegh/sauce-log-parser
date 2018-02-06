@@ -31,7 +31,6 @@ class Job(object):
         """Reads data and returns max, min, mean and total"""
         commands = []
         results = {}
-
         for log in self.data:
             curr_command = log[command]
             if curr_command != None:
@@ -50,12 +49,12 @@ class Job(object):
         "Prints results dict with the desired calculations"
         if len(results) > 0:
 
-            print "  mean is {}".format(results["mean"])
-            print "  max is {}".format(results["max"])
-            print "  min is {}".format(results["min"])
-            print "  total is {}".format(results["total"])
+            print("  mean is {}".format(results["mean"]))
+            print("  max is {}".format(results["max"]))
+            print("  min is {}".format(results["min"]))
+            print("  total is {}".format(results["total"]))
         else:
-            print "There is no commands to be parsed" 
+            print("There is no commands to be parsed")
 
     def examine_job(self):
         """Gets information from data"""
@@ -63,12 +62,12 @@ class Job(object):
         duration = self.read_data("duration")
         between_commands = self.read_data("between_commands")
 
-        print "test id: {}".format(self.job_id)
-        print "Duration:"
+        print("test id: {}".format(self.job_id))
+        print("Duration:")
         Job.print_results(duration)
-        print "between_commands:"
+        print("between_commands:")
         Job.print_results(between_commands)
-        print ""
+        print("")
 
     @staticmethod
     def mean(num_list):
