@@ -36,21 +36,26 @@ class Job(object):
             curr_command = log[command]
             if curr_command != None:
                 commands.append(curr_command)
+        if len(commands) > 0:  # Check if there's actual commands to process
 
-        results["mean"] = Job.mean(commands)
-        results["max"] = max(commands)
-        results["min"] = min(commands)
-        results["total"] = Job.total(commands)
+            results["mean"] = Job.mean(commands)
+            results["max"] = max(commands)
+            results["min"] = min(commands)
+            results["total"] = Job.total(commands)
 
         return results
 
     @staticmethod
     def print_results(results):
         "Prints results dict with the desired calculations"
-        print "  mean is {}".format(results["mean"])
-        print "  max is {}".format(results["max"])
-        print "  min is {}".format(results["min"])
-        print "  total is {}".format(results["total"])
+        if len(results) > 0:
+
+            print "  mean is {}".format(results["mean"])
+            print "  max is {}".format(results["max"])
+            print "  min is {}".format(results["min"])
+            print "  total is {}".format(results["total"])
+        else:
+            print "There is no commands to be parsed" 
 
     def examine_job(self):
         """Gets information from data"""

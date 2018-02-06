@@ -32,15 +32,18 @@ def read_log(log_name, command):
         data = json.load(log)
 
     for log in data:
-    #   curr_command = log["between_commands"]
         curr_command = log[command]
         if curr_command != None:
             commands.append(curr_command)
 
-    print("  mean is {}".format(mean(commands)))
-    print("  max is {}".format(max(commands)))
-    print("  min is {}".format(min(commands)))
-    print("  total is {}".format(total(commands)))
+    if len(commands) > 0:  # Check if there's actual commands to process
+
+        print("  mean is {}".format(mean(commands)))
+        print("  max is {}".format(max(commands)))
+        print("  min is {}".format(min(commands)))
+        print("  total is {}".format(total(commands)))
+    else:
+        print("There is no commands to be parsed")
 
 def examine_job(job_id):
     """Parses job id from log name"""
