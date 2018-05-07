@@ -18,7 +18,6 @@ def get_log(admin, access_key, username, job_id, write=False):
     headers = {'Authorization' : 'Basic {}'.format(user_pass.decode('ascii'))}
     _, response = http_conn.request(url, method="GET", headers=headers)
 
-    print(response)
     if write:
         with open(log_name, 'w') as log:
             log.write(response.decode('ascii'))
