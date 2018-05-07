@@ -18,6 +18,7 @@ def mean(num_list):
 
     return num_sum/i
 
+
 def total(num_list):
     """Calculates total of a list"""
     num_sum = 0.0
@@ -42,7 +43,7 @@ def read_log(log_name, command):
             if curr_command is not None:
                 commands.append(curr_command)
 
-    if len(commands) > 0:  # Check if there's actual commands to process
+    if not commands:  # Check if there's actual commands to process
 
         print("  mean is {}".format(mean(commands)))
         print("  max is {}".format(max(commands)))
@@ -50,6 +51,7 @@ def read_log(log_name, command):
         print("  total is {}".format(total(commands)))
     else:
         print("There is no commands to be parsed")
+
 
 def examine_job(job_id):
     """Parses job id from log name"""
@@ -63,12 +65,14 @@ def examine_job(job_id):
     read_log(log_name, "between_commands")
     print("")
 
+
 def is_log_downloaded(job_id):
     """Checks if log exists in folder"""
     files = glob.glob('log_{}.*'.format(job_id))
     if files:
         return True
     return False
+
 
 def main():
     """Main function"""
@@ -82,7 +86,6 @@ def main():
 
     args = arg_parser.parse_args()
 
-
     if not args.user:
         args.user = os.environ.get('SAUCE_USERNAME')
     if not args.access_key:
@@ -92,12 +95,11 @@ def main():
         if is_log_downloaded(job):
             examine_job(job)
         else:
-            #NEED TO HAVE ADMIN USER AND ACCESS_KEY
-            # Will create a Job instance
 
             if args.user and args.access_key and args.admin:
                 job_instance = sauce_job.Job(job)
-                job_instance.fetch_log(args.admin, args.access_key, args.user, args.save)
+                job_instance.fetch_log(args.admin, args.access_key, args.user,
+                                       args.save)
                 job_instance.examine_job()
 
             else:
