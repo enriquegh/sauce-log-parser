@@ -3,6 +3,7 @@
 import json
 import log_collector
 
+
 class Job(object):
     """docstring for Job."""
 
@@ -24,7 +25,8 @@ class Job(object):
 
     def fetch_log(self, admin, access_key, username, write):
         """Downloads log"""
-        response = log_collector.get_log(admin, access_key, username, self.job_id, write)
+        response = log_collector.get_log(admin, access_key, username,
+                                         self.job_id, write)
         self.data = json.loads(response)
 
     def read_data(self, command):
@@ -33,9 +35,9 @@ class Job(object):
         results = {}
         for log in self.data:
             curr_command = log[command]
-            if curr_command != None:
+            if curr_command is not None:
                 commands.append(curr_command)
-        if len(commands) > 0:  # Check if there's actual commands to process
+        if not commands:  # Check if there's actual commands to process
 
             results["mean"] = Job.mean(commands)
             results["max"] = max(commands)
@@ -47,7 +49,7 @@ class Job(object):
     @staticmethod
     def print_results(results):
         "Prints results dict with the desired calculations"
-        if len(results) > 0:
+        if not results:
 
             print("  mean is {}".format(results["mean"]))
             print("  max is {}".format(results["max"]))

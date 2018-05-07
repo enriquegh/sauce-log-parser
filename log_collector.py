@@ -15,7 +15,7 @@ def get_log(admin, access_key, username, job_id, write=False):
     http_conn = httplib2.Http()
     # http_conn.add_credentials(admin, access_key)
     user_pass = base64.b64encode('{}:{}'.format(admin, access_key).encode('ascii'))
-    headers = {'Authorization' : 'Basic {}'.format(user_pass.decode('ascii'))}
+    headers = {'Authorization': 'Basic {}'.format(user_pass.decode('ascii'))}
     _, response = http_conn.request(url, method="GET", headers=headers)
 
     if write:
