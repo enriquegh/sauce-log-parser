@@ -25,6 +25,7 @@ def total(num_list):
         num_sum += item
     return num_sum
 
+
 def read_log(log_name, command):
     """Reads in a log and returns a list of all the command values"""
     commands = []
@@ -32,9 +33,14 @@ def read_log(log_name, command):
         data = json.load(log)
 
     for log in data:
-        curr_command = log[command]
-        if curr_command != None:
-            commands.append(curr_command)
+
+        # If "status" is present, a javascript title was sent
+        if "status" in log:
+            pass
+        else:
+            curr_command = log[command]
+            if curr_command is not None:
+                commands.append(curr_command)
 
     if len(commands) > 0:  # Check if there's actual commands to process
 
