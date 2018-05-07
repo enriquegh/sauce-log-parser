@@ -42,8 +42,7 @@ def read_log(log_name, command):
             curr_command = log[command]
             if curr_command is not None:
                 commands.append(curr_command)
-
-    if not commands:  # Check if there's actual commands to process
+    if commands:  # Check if there's actual commands to process
 
         print("  mean is {}".format(mean(commands)))
         print("  max is {}".format(max(commands)))

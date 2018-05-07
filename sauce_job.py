@@ -37,7 +37,7 @@ class Job(object):
             curr_command = log[command]
             if curr_command is not None:
                 commands.append(curr_command)
-        if not commands:  # Check if there's actual commands to process
+        if commands:  # Check if there's actual commands to process
 
             results["mean"] = Job.mean(commands)
             results["max"] = max(commands)
@@ -49,7 +49,7 @@ class Job(object):
     @staticmethod
     def print_results(results):
         "Prints results dict with the desired calculations"
-        if not results:
+        if results:
 
             print("  mean is {}".format(results["mean"]))
             print("  max is {}".format(results["max"]))
