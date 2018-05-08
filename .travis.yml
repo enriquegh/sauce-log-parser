@@ -4,6 +4,8 @@ python:
   - 3.4
   - 3.5
   - 3.6
+install:
+  - pip install -r requirements_test.txt
 script:
   - python -m pytest --cov=./ tests/
 after_script:
