@@ -34,9 +34,13 @@ class Job(object):
         commands = []
         results = {}
         for log in self.data:
-            curr_command = log[command]
-            if curr_command is not None:
-                commands.append(curr_command)
+            # If "status" is present, a javascript title was sent
+            if "status" in log:
+                pass
+            else:
+                curr_command = log[command]
+                if curr_command is not None:
+                    commands.append(curr_command)
         if commands:  # Check if there's actual commands to process
 
             results["mean"] = Job.mean(commands)
