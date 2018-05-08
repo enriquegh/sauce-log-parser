@@ -73,7 +73,7 @@ def is_log_downloaded(job_id):
     return False
 
 
-def main():
+def main(arguments=None):
     """Main function"""
 
     arg_parser = argparse.ArgumentParser()
@@ -83,7 +83,7 @@ def main():
     arg_parser.add_argument("-s", "--save", help="Save log", action="store_true")
     arg_parser.add_argument("job_id", nargs="+", help="Job id to be examined")
 
-    args = arg_parser.parse_args()
+    args = arg_parser.parse_args(arguments)
 
     if not args.user:
         args.user = os.environ.get('SAUCE_USERNAME')
