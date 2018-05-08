@@ -75,11 +75,17 @@ def test_read_log_empty(tmpdir, capsys):
     sauce_parser.read_log("{}/log_test.log".format(test_log.dirname), "between_commands")
     out, error = capsys.readouterr()
     assert EXPECTED_OUTPUT_BETWEEN == out
-    assert True
 
 def test_successful_download_of_assets():
     assert True
 
 
-def test_incorrect_credentials():
-    assert True
+def test_incorrect_credentials(capsys):
+
+    JOB_ID = "2h433-34bdba-3hrb3-3432"
+    EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Can't download job id {} without credentials. Please try again\n".format(JOB_ID)
+    sauce_parser.main(["-u", "wrong_username", "-k", "MY_ACCESS_KEY", JOB_ID])
+
+    out, error = capsys.readouterr()
+
+    assert EXPECTED_OUTPUT_WRONG_CREDENTIALS == out
