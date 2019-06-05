@@ -8,9 +8,11 @@ This can help determine if a "slow" test is because of Selenium commands/server 
 
 ## Usage
 Run against one session!
+
 `python sel_log_parser.py -a $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -u some-username some-session-id`
 
 Run against multiple sessions!
+
 `python sel_log_parser.py -a $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -u some-username some-session-id another-session-id third-session-id ... Nth-session`
 
 Output:
