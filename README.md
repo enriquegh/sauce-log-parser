@@ -7,20 +7,23 @@ With those two metrics it gets the average, min, max and total of them.
 This can help determine if a "slow" test is because of Selenium commands/server issue or if there is latency in the connection
 
 ```
+python sel_log_parser.py -h
 usage: sel_log_parser.py [-h] [-a ADMIN] [-k ACCESS_KEY] [-u USER] [-s]
                          job_id [job_id ...]
 
 positional arguments:
-  job_id                Job id to be examined
+  job_id                Sauce Labs Session ID to be examined.
 
 optional arguments:
   -h, --help            show this help message and exit
   -a ADMIN, --admin ADMIN
-                        Sauce admin username
+                        Sauce Admin username. For Saucers only.
   -k ACCESS_KEY, --access_key ACCESS_KEY
-                        Sauce admin access key
-  -u USER, --user USER  Sauce username
-  -s, --save            Save log
+                        Sauce Admin access key. For Saucers only.
+  -u USER, --user USER  Sauce username. Account Username of the Test Owner
+                        that ran the session.
+  -s, --save            Save the output as a .log file in the cwd. Schema is
+                        log_session-id.log.
 ```
 
 ## Usage
