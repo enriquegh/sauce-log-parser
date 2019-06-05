@@ -77,11 +77,12 @@ def main(arguments=None):
     """Main function"""
 
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("-a", "--admin", help="Sauce admin username")
-    arg_parser.add_argument("-k", "--access_key", help="Sauce admin access key")
-    arg_parser.add_argument("-u", "--user", help="Sauce username")
-    arg_parser.add_argument("-s", "--save", help="Save log", action="store_true")
-    arg_parser.add_argument("job_id", nargs="+", help="Job id to be examined")
+    arg_parser.add_argument("-a", "--admin", help="Sauce Admin username.  For Saucers only.")
+    arg_parser.add_argument("-k", "--access_key", help="Sauce Admin access key.  For Saucers only.")
+    arg_parser.add_argument("-u", "--user", help="Sauce username.  Account Username of the Test Owner that ran the session.")
+    arg_parser.add_argument("-s", "--save", help="Save the output as a .log file in the cwd.  Schema is log_session-id.log.", action="store_true")
+    arg_parser.add_argument("job_id", nargs="+", help="Sauce Labs Session ID to be examined.")
+
 
     args = arg_parser.parse_args(arguments)
 
