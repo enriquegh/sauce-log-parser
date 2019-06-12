@@ -4,13 +4,13 @@ import base64
 import httplib2
 
 
-URL_BASE = "https://saucelabs.com/rest/v1/{username}/jobs/{job_id}/assets/log.json"
+URL_BASE = "{api_endpoint}/{username}/jobs/{job_id}/assets/log.json"
 
 
-def get_log(admin, access_key, username, job_id, write=False):
+def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
     "Obtain log with username and job_id"
 
-    url = URL_BASE.format(username=username, job_id=job_id)
+    url = URL_BASE.format(api_endpoint=api_endpoint, username=username, job_id=job_id)
     log_name = "log_{}.log".format(job_id)
     http_conn = httplib2.Http()
     # http_conn.add_credentials(admin, access_key)
