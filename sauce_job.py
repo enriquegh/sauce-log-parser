@@ -23,11 +23,11 @@ class Job(object):
         """Returns the duration dict"""
         return self.between_commands
 
-    def fetch_log(self, admin, access_key, username, write):
+    def fetch_log(self, api_endpoint, admin, access_key, username, write):
         """Downloads log"""
-        response = log_collector.get_log(admin, access_key, username,
+        response = log_collector.get_log(api_endpoint, admin, access_key, username,
                                          self.job_id, write)
-        self.data = json.loads(response)
+        self.data = json.loads(response.decode())
 
     def read_data(self, command):
         """Reads data and returns max, min, mean and total"""
@@ -55,10 +55,10 @@ class Job(object):
         "Prints results dict with the desired calculations"
         if results:
 
-            print("  mean is {}".format(results["mean"]))
-            print("  max is {}".format(results["max"]))
-            print("  min is {}".format(results["min"]))
-            print("  total is {}".format(results["total"]))
+            print("  mean: {}".format(results["mean"]))
+            print("  max: {}".format(results["max"]))
+            print("  min: {}".format(results["min"]))
+            print("  total: {}".format(results["total"]))
         else:
             print("There is no commands to be parsed")
 
@@ -68,8 +68,9 @@ class Job(object):
         duration = self.read_data("duration")
         between_commands = self.read_data("between_commands")
 
-        print("test id: {}".format(self.job_id))
-        print("Duration:")
+        print("---")
+        print("test_id: {}".format(self.job_id))
+        print("duration:")
         Job.print_results(duration)
         print("between_commands:")
         Job.print_results(between_commands)

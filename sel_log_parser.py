@@ -43,22 +43,20 @@ def read_log(log_name, command):
             if curr_command is not None:
                 commands.append(curr_command)
     if commands:  # Check if there's actual commands to process
-
-        print("  mean is {}".format(mean(commands)))
-        print("  max is {}".format(max(commands)))
-        print("  min is {}".format(min(commands)))
-        print("  total is {}".format(total(commands)))
+        print("  mean: {}".format(mean(commands)))
+        print("  max: {}".format(max(commands)))
+        print("  min: {}".format(min(commands)))
+        print("  total: {}".format(total(commands)))
     else:
         print("There is no commands to be parsed")
-
 
 def examine_job(job_id):
     """Parses job id from log name"""
     files = glob.glob('log_{}.*'.format(job_id))
     log_name = files[0]
 
-    print("test id: {}".format(job_id))
-    print("Duration:")
+    print("testId: {}".format(job_id))
+    print("duration:")
     read_log(log_name, "duration")
     print("between_commands:")
     read_log(log_name, "between_commands")
@@ -81,6 +79,7 @@ def main(arguments=None):
     arg_parser.add_argument("-k", "--access_key", help="Sauce Admin access key.  For Saucers only.")
     arg_parser.add_argument("-u", "--user", help="Sauce username.  Account Username of the Test Owner that ran the session.")
     arg_parser.add_argument("-s", "--save", help="Save the output as a .log file in the cwd.  Schema is log_session-id.log.", action="store_true")
+    arg_parser.add_argument("-r", "--region", help="Sauce region where test was performed (us-west-1, us-east-1)")
     arg_parser.add_argument("job_id", nargs="+", help="Sauce Labs Session ID to be examined.")
 
 
@@ -90,6 +89,14 @@ def main(arguments=None):
         args.user = os.environ.get('SAUCE_USERNAME')
     if not args.access_key:
         args.access_key = os.environ.get('SAUCE_ACCESS_KEY')
+    if not args.region:
+        args.region = 'us-west-1'
+
+    api_endpoint = {
+      'us-west-1': 'https://saucelabs.com/rest/v1',
+      'us-east-1': 'https://us-east-1.saucelabs.com/rest/v1',
+      'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1'
+    }[args.region]
 
     for job in args.job_id:
         if is_log_downloaded(job):
@@ -98,7 +105,7 @@ def main(arguments=None):
 
             if args.user and args.access_key and args.admin:
                 job_instance = sauce_job.Job(job)
-                job_instance.fetch_log(args.admin, args.access_key, args.user,
+                job_instance.fetch_log(api_endpoint, args.admin, args.access_key, args.user,
                                        args.save)
                 job_instance.examine_job()
 

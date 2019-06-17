@@ -20,14 +20,14 @@ def test_total_command():
 
 def test_read_log_success(tmpdir, capsys):
     # Weird format is needed to match the exact output
-    EXPECTED_OUTPUT_DURATION = """  mean is 0.10878261275913405
-  max is 0.9630000591278076
-  min is 0.0
-  total is 2.502000093460083\n"""
-    EXPECTED_OUTPUT_BETWEEN = """  mean is 0.28918180682442407
-  max is 0.9389998912811279
-  min is 0.0409998893737793
-  total is 6.361999750137329\n"""
+    EXPECTED_OUTPUT_DURATION = """  mean: 0.10878261275913405
+  max: 0.9630000591278076
+  min: 0.0
+  total: 2.502000093460083\n"""
+    EXPECTED_OUTPUT_BETWEEN = """  mean: 0.28918180682442407
+  max: 0.9389998912811279
+  min: 0.0409998893737793
+  total: 6.361999750137329\n"""
 
     test_log = tmpdir.join("log_test.log")
     test_log.write(SUCESSFUL_TEST_LOG)
@@ -43,10 +43,10 @@ def test_read_log_success(tmpdir, capsys):
 
 def test_read_log_no_between_commands(tmpdir, capsys):
     # Weird format is needed to match the exact output
-    EXPECTED_OUTPUT_DURATION = """  mean is 2.184000015258789
-  max is 2.184000015258789
-  min is 2.184000015258789
-  total is 2.184000015258789\n"""
+    EXPECTED_OUTPUT_DURATION = """  mean: 2.184000015258789
+  max: 2.184000015258789
+  min: 2.184000015258789
+  total: 2.184000015258789\n"""
     EXPECTED_OUTPUT_BETWEEN = """There is no commands to be parsed\n"""
 
     test_log = tmpdir.join("log_test.log")

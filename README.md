@@ -38,17 +38,18 @@ Run against multiple sessions!
 Output:
 
 ```
-test id: your-session-id
-Duration:
-  mean is 0.33958974618178145
-  max is 480.00422978401184
-  min is 0.0022919178009033203
-  total is 551.8333375453949
+---
+test_id: your-session-id
+duration:
+  mean: 0.33958974618178145
+  max: 480.00422978401184
+  min: 0.0022919178009033203
+  total: 551.8333375453949
 between_commands:
-  mean is 0.1021887963922153
-  max is 180.5098659992218
-  min is -477.2646918296814
-  total is 165.95460534095764
+  mean: 0.1021887963922153
+  max: 180.5098659992218
+  min: -477.2646918296814
+  total: 165.95460534095764
 ```
 
 ## Setup
@@ -56,4 +57,3 @@ Manual Setup via git master branch:
 1. `cd` to a directory where you want the python tools/files.
 1. `git clone git@github.com:enriquegh/sauce-log-parser.git`
 1. `cd sauce-log-parser` and start looking at times!
-
