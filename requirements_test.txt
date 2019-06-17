@@ -1,4 +1,4 @@
 -r requirements.txt
-pytest>=3.2.2
-pytest-cov>=2.5.1
-codecov>=2.0.9
+pytest==4.6.2
+pytest-cov==2.7.1
+codecov==2.0.15
