@@ -10,6 +10,6 @@ matrix:
 install:
   - pip install -r requirements_test.txt
 script:
-  - pytest --cov=./
+  - pytest --cov=./ tests/
 after_script:
 - codecov
