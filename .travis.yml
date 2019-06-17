@@ -11,6 +11,8 @@ matrix:
       sudo: true
     - python: 3.7
       env: TOX_ENV=flake8
+      dist: xenial
+      sudo: true
 install:
   - pip install tox
 script:
