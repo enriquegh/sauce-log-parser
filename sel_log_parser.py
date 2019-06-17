@@ -50,6 +50,7 @@ def read_log(log_name, command):
     else:
         print("There is no commands to be parsed")
 
+
 def examine_job(job_id):
     """Parses job id from log name"""
     files = glob.glob('log_{}.*'.format(job_id))
@@ -75,13 +76,22 @@ def main(arguments=None):
     """Main function"""
 
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("-a", "--admin", help="Sauce Admin username.  For Saucers only.")
-    arg_parser.add_argument("-k", "--access_key", help="Sauce Admin access key.  For Saucers only.")
-    arg_parser.add_argument("-u", "--user", help="Sauce username.  Account Username of the Test Owner that ran the session.")
-    arg_parser.add_argument("-s", "--save", help="Save the output as a .log file in the cwd.  Schema is log_session-id.log.", action="store_true")
-    arg_parser.add_argument("-r", "--region", help="Sauce region where test was performed (us-west-1, us-east-1)")
-    arg_parser.add_argument("job_id", nargs="+", help="Sauce Labs Session ID to be examined.")
-
+    arg_parser.add_argument("-a", "--admin",
+                            help="Sauce Admin username.  For Saucers only.")
+    arg_parser.add_argument("-k", "--access_key",
+                            help="Sauce Admin access key.  For Saucers only.")
+    arg_parser.add_argument("-u", "--user",
+                            help="Sauce username.  Account Username of the"
+                            " Test Owner that ran the session.")
+    arg_parser.add_argument("-s", "--save",
+                            help="Save the output as a .log file in the cwd. "
+                            "Schema is log_session-id.log.",
+                            action="store_true")
+    arg_parser.add_argument("-r", "--region",
+                            help="Sauce region where test was performed"
+                            "(us-west-1, us-east-1)")
+    arg_parser.add_argument("job_id", nargs="+",
+                            help="Sauce Labs Session ID to be examined.")
 
     args = arg_parser.parse_args(arguments)
 
@@ -105,12 +115,13 @@ def main(arguments=None):
 
             if args.user and args.access_key and args.admin:
                 job_instance = sauce_job.Job(job)
-                job_instance.fetch_log(api_endpoint, args.admin, args.access_key, args.user,
-                                       args.save)
+                job_instance.fetch_log(api_endpoint, args.admin,
+                                       args.access_key, args.user, args.save)
                 job_instance.examine_job()
 
             else:
-                print("Can't download job id {} without credentials. Please try again".format(job))
+                print("Can't download job id {} without credentials."
+                      "Please try again".format(job))
 
 
 if __name__ == '__main__':

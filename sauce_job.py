@@ -25,8 +25,8 @@ class Job(object):
 
     def fetch_log(self, api_endpoint, admin, access_key, username, write):
         """Downloads log"""
-        response = log_collector.get_log(api_endpoint, admin, access_key, username,
-                                         self.job_id, write)
+        response = log_collector.get_log(api_endpoint, admin, access_key,
+                                         username, self.job_id, write)
         self.data = json.loads(response.decode())
 
     def read_data(self, command):
