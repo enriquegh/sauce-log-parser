@@ -1,3 +1,6 @@
+# Sauce Log Parser 
+[![Build Status](https://travis-ci.org/enriquegh/sauce-log-parser.svg?branch=master)](https://travis-ci.org/enriquegh/sauce-log-parser)
+
 Small python script that analyzes the log.json file provided by a Sauce Labs test.
 
 It gets the time commands took to run and the time in between Sauce Labs sent a response and received another request.
@@ -24,6 +27,9 @@ optional arguments:
                         that ran the session.
   -s, --save            Save the output as a .log file in the cwd. Schema is
                         log_session-id.log.
+  -r REGION, --region REGION
+                        Sauce region where test was performed(us-west-1, us-
+                        east-1)
 ```
 
 ## Usage
