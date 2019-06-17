@@ -92,7 +92,7 @@ def test_successful_download_of_assets():
 def test_incorrect_credentials(capsys):
 
     JOB_ID = "2h433-34bdba-3hrb3-3432"
-    EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Can't download job id {} without" \
+    EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Can't download job id {} without " \
                                         "credentials. Please try again\n" \
                                         .format(JOB_ID)
     sauce_parser.main(["-u", "wrong_username", "-k", "MY_ACCESS_KEY", JOB_ID])

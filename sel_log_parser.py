@@ -120,7 +120,7 @@ def main(arguments=None):
                 job_instance.examine_job()
 
             else:
-                print("Can't download job id {} without credentials."
+                print("Can't download job id {} without credentials. "
                       "Please try again".format(job))
 
 
