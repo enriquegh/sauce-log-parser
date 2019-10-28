@@ -89,7 +89,7 @@ def main(arguments=None):
                             action="store_true")
     arg_parser.add_argument("-r", "--region",
                             help="Sauce region where test was performed"
-                            "(us-west-1, us-east-1)")
+                            "(us-west-1, us-east-1, eu-central-1)")
     arg_parser.add_argument("job_id", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
 
@@ -105,7 +105,8 @@ def main(arguments=None):
     api_endpoint = {
       'us-west-1': 'https://saucelabs.com/rest/v1',
       'us-east-1': 'https://us-east-1.saucelabs.com/rest/v1',
-      'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1'
+      'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1',
+      'eu-central-1': 'https://eu-central-1.saucelabs.com/rest/v1'
     }[args.region]
 
     for job in args.job_id:
