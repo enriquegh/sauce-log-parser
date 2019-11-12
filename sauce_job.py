@@ -27,7 +27,7 @@ class Job(object):
         """Downloads log"""
         response = log_collector.get_log(api_endpoint, admin, access_key,
                                          username, self.job_id, write)
-        self.data = json.loads(response.decode())
+        self.data = json.loads(response)
 
     def read_data(self, command):
         """Reads data and returns max, min, mean and total"""
