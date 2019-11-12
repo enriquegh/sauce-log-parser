@@ -6,7 +6,7 @@ import os.path
 import argparse
 import glob
 import sauce_job
-
+import logging
 
 def mean(num_list):
     """Calculates mean of a list"""
@@ -90,6 +90,9 @@ def main(arguments=None):
     arg_parser.add_argument("-r", "--region",
                             help="Sauce region where test was performed"
                             "(us-west-1, us-east-1, eu-central-1)")
+    arg_parser.add_argument("-v", "--verbose",
+                            help="Verbose flag to print at debug level",
+                            action="store_true")
     arg_parser.add_argument("job_id", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
 
@@ -108,6 +111,9 @@ def main(arguments=None):
       'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1',
       'eu-central-1': 'https://eu-central-1.saucelabs.com/rest/v1'
     }[args.region]
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
     for job in args.job_id:
         if is_log_downloaded(job):
