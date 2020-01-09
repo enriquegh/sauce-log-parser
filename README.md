@@ -63,3 +63,9 @@ Manual Setup via git master branch:
 1. `cd` to a directory where you want the python tools/files.
 1. `git clone git@github.com:enriquegh/sauce-log-parser.git`
 1. `cd sauce-log-parser` and start looking at times!
+
+
+## Contributing and Testing
+Fork the remote master branch and make pull requests.  Open issues if something is wrong and copy-paste your input & output.
+
+Launch tests with `py.test`.  Pytest is used and the `/tests` directory should get you started on seeing what is covered and what tests should look like.
