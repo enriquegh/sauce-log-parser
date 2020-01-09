@@ -18,4 +18,7 @@ def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
     if write:
         with open(log_name, 'w') as log:
             log.write(resp.text)
+    if resp.status_code == 404:
+        print("404 API response.  The asset is no longer there (> 30 days since test creation) or does not exist.")
+        return None
     return resp.text
