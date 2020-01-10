@@ -124,7 +124,7 @@ def main(arguments=None):
                 job_instance = sauce_job.Job(job)
                 job_instance.fetch_log(api_endpoint, args.admin,
                                        args.access_key, args.user, args.save)
-                if job_instance.data == None:
+                if job_instance.data is None:
                     continue
                 job_instance.examine_job()
 
@@ -135,3 +135,4 @@ def main(arguments=None):
 
 if __name__ == '__main__':
     main()
+

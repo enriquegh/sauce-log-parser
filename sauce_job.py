@@ -95,3 +95,4 @@ class Job(object):
         for item in num_list:
             num_sum += item
         return num_sum
+
