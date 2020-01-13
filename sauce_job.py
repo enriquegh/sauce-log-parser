@@ -1,5 +1,4 @@
 """Created objects needed for Sauce logs"""
-
 import json
 import log_collector
 
@@ -25,15 +24,23 @@ class Job(object):
 
     def fetch_log(self, api_endpoint, admin, access_key, username, write):
         """Downloads log"""
+        # try and catch custom log_collector exception here
         response = log_collector.get_log(api_endpoint, admin, access_key,
                                          username, self.job_id, write)
-        if response != None:
+        if response is not None:
             self.data = json.loads(response)
 
     def read_data(self, command):
         """Reads data and returns max, min, mean and total"""
         commands = []
         results = {}
+        if self.data is None:
+            results["mean"] = "n/a"
+            results["max"] = "n/a"
+            results["min"] = "n/a"
+            results["total"] = "n/a"
+            return results
+
         for log in self.data:
             # If "status" is present, a javascript title was sent
             if "status" in log:
@@ -43,7 +50,6 @@ class Job(object):
                 if curr_command is not None:
                     commands.append(curr_command)
         if commands:  # Check if there's actual commands to process
-
             results["mean"] = Job.mean(commands)
             results["max"] = max(commands)
             results["min"] = min(commands)
@@ -55,7 +61,6 @@ class Job(object):
     def print_results(results):
         "Prints results dict with the desired calculations"
         if results:
-
             print("  mean: {}".format(results["mean"]))
             print("  max: {}".format(results["max"]))
             print("  min: {}".format(results["min"]))
@@ -65,7 +70,9 @@ class Job(object):
 
     def examine_job(self):
         """Gets information from data"""
-
+        if self.data is None:
+            print("Could not download job id", self.job_id)
+            return
         duration = self.read_data("duration")
         between_commands = self.read_data("between_commands")
 
@@ -85,7 +92,6 @@ class Job(object):
         for item in num_list:
             num_sum += item
             i += 1
-
         return num_sum/i
 
     @staticmethod
@@ -95,4 +101,3 @@ class Job(object):
         for item in num_list:
             num_sum += item
         return num_sum
-

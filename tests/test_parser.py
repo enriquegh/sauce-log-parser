@@ -94,14 +94,13 @@ def test_successful_download_of_assets():
 def test_incorrect_credentials(capsys):
 
     JOB_ID = "2h433-34bdba-3hrb3-3432"
-    EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Can't download job id {} without " \
-                                        "credentials. Please try again\n" \
+    EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Could not download job id {}" \
                                         .format(JOB_ID)
-    sauce_parser.main(["-u", "wrong_username", "-k", "MY_ACCESS_KEY", JOB_ID])
+    sauce_parser.main(["-u", "wrong_username", "-k", "BAD_KEY", JOB_ID])
 
     out, error = capsys.readouterr()
 
-    assert EXPECTED_OUTPUT_WRONG_CREDENTIALS == out
+    assert EXPECTED_OUTPUT_WRONG_CREDENTIALS in out
 
 
 def test_404_on_missing_asset():
