@@ -10,6 +10,11 @@ class AssetsNotFound(Exception):
     pass
 
 
+class SomethingWentWrong(Exception):
+    """A non 200 HTTP status was returned.  Something bad may have happened"""
+    pass
+
+
 def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
     "Obtain log with username and job_id"
 
@@ -23,4 +28,6 @@ def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
             log.write(resp.text)
     if resp.status_code == 404:
         raise AssetsNotFound
+    if resp.status_code != 200:
+        raise SomethingWentWrong
     return resp.text

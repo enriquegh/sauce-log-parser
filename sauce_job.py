@@ -31,6 +31,9 @@ class Job(object):
             print("404 API response.  The assets for %s are no longer available\
 (> 30 days since test creation) or do not exist." % self.job_id)
             return
+        except log_collector.SomethingWentWrong:
+            print("Something went wrong. Try running with '-v'")
+            return
         if response:
             self.data = json.loads(response)
 
