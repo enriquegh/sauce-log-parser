@@ -24,10 +24,14 @@ class Job(object):
 
     def fetch_log(self, api_endpoint, admin, access_key, username, write):
         """Downloads log"""
-        # try and catch custom log_collector exception here
-        response = log_collector.get_log(api_endpoint, admin, access_key,
-                                         username, self.job_id, write)
-        if response is not None:
+        try:
+            response = log_collector.get_log(api_endpoint, admin, access_key,
+                                             username, self.job_id, write)
+        except log_collector.AssetsNotFound:
+            print("404 API response.  The assets for %s are no longer available\
+(> 30 days since test creation) or do not exist." % self.job_id)
+            return
+        if response:
             self.data = json.loads(response)
 
     def read_data(self, command):
