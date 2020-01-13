@@ -8,6 +8,7 @@ import glob
 import sauce_job
 import logging
 
+
 def mean(num_list):
     """Calculates mean of a list"""
     i = 0
@@ -135,4 +136,3 @@ def main(arguments=None):
 
 if __name__ == '__main__':
     main()
-
