@@ -8,6 +8,7 @@ import glob
 import sauce_job
 import logging
 
+
 def mean(num_list):
     """Calculates mean of a list"""
     i = 0
@@ -72,6 +73,19 @@ def is_log_downloaded(job_id):
     return False
 
 
+# build the job(s) objects for the Job IDs user supplied
+def build_job(job,
+              api_endpoint,
+              args):
+    job_instance = sauce_job.Job(job)
+    job_instance.fetch_log(api_endpoint,
+                           args.admin,
+                           args.access_key,
+                           args.user,
+                           args.save)
+    return job_instance
+
+
 def main(arguments=None):
     """Main function"""
 
@@ -115,20 +129,9 @@ def main(arguments=None):
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
-    for job in args.job_id:
-        if is_log_downloaded(job):
-            examine_job(job)
-        else:
-
-            if args.user and args.access_key and args.admin:
-                job_instance = sauce_job.Job(job)
-                job_instance.fetch_log(api_endpoint, args.admin,
-                                       args.access_key, args.user, args.save)
-                job_instance.examine_job()
-
-            else:
-                print("Can't download job id {} without credentials. "
-                      "Please try again".format(job))
+    job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
+                     for job in args.job_id]
+    [job.examine_job() for job in job_instances]
 
 
 if __name__ == '__main__':

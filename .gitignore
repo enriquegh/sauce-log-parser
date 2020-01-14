@@ -3,6 +3,7 @@
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
+*pytest_cache*
 *.py[cod]
 *$py.class
 
@@ -107,3 +108,5 @@ ENV/
 # End of https://www.gitignore.io/api/python
 
 .linter-py_*/
+
+.vscode

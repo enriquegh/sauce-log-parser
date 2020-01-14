@@ -1,10 +1,18 @@
 """Gets log from Sauce Labs"""
-
-import base64
 import requests
 
 
 URL_BASE = "{api_endpoint}/{username}/jobs/{job_id}/assets/log.json"
+
+
+class AssetsNotFound(Exception):
+    """Asset(s) for a job were not present or the job does not exist"""
+    pass
+
+
+class SomethingWentWrong(Exception):
+    """A non 200 HTTP status was returned.  Something bad may have happened"""
+    pass
 
 
 def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
@@ -18,4 +26,8 @@ def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
     if write:
         with open(log_name, 'w') as log:
             log.write(resp.text)
+    if resp.status_code == 404:
+        raise AssetsNotFound
+    if resp.status_code != 200:
+        raise SomethingWentWrong
     return resp.text
