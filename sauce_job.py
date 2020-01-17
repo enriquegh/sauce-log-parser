@@ -80,15 +80,15 @@ class Job(object):
         if self.data is None:
             print("Could not download job id", self.job_id)
             return
-        duration = self.read_data("duration")
-        between_commands = self.read_data("between_commands")
+        self.duration = self.read_data("duration")
+        self.between_commands = self.read_data("between_commands")
 
         print("---")
         print("test_id: {}".format(self.job_id))
         print("duration:")
-        Job.print_results(duration)
+        Job.print_results(self.duration)
         print("between_commands:")
-        Job.print_results(between_commands)
+        Job.print_results(self.between_commands)
         print("")
 
     @staticmethod
