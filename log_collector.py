@@ -21,7 +21,7 @@ def get_log(api_endpoint, admin, access_key, username, job_id, write=False):
     url = URL_BASE.format(api_endpoint=api_endpoint, username=username,
                           job_id=job_id)
     log_name = "log_{}.log".format(job_id)
-    resp = requests.get(url, auth=(username, access_key))
+    resp = requests.get(url, auth=(admin, access_key))
 
     if write:
         with open(log_name, 'w') as log:
