@@ -7,6 +7,8 @@ import argparse
 import glob
 import sauce_job
 import logging
+import csv
+import datetime
 
 
 def mean(num_list):
@@ -86,6 +88,10 @@ def build_job(job,
     return job_instance
 
 
+def rename_command_dict(name, dictionary):
+    return dict((name + "_" + k, v) for k, v in dictionary.items())
+
+
 def main(arguments=None):
     """Main function"""
 
@@ -98,7 +104,7 @@ def main(arguments=None):
                             help="Sauce username.  Account Username of the"
                             " Test Owner that ran the session.")
     arg_parser.add_argument("-s", "--save",
-                            help="Save the output as a .log file in the cwd. "
+                            help="Save the output as a .log file in cwd. "
                             "Schema is log_session-id.log.",
                             action="store_true")
     arg_parser.add_argument("-r", "--region",
@@ -106,6 +112,10 @@ def main(arguments=None):
                             "(us-west-1, us-east-1, eu-central-1)")
     arg_parser.add_argument("-v", "--verbose",
                             help="Verbose flag to print at debug level",
+                            action="store_true")
+    arg_parser.add_argument("--csv",
+                            help="Save the output of all tests as csv in cwd. "
+                            "Schema is date_job-ids.csv",
                             action="store_true")
     arg_parser.add_argument("job_id", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
@@ -131,7 +141,31 @@ def main(arguments=None):
 
     job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
                      for job in args.job_id]
-    [job.examine_job() for job in job_instances]
+    csv_raw_data = []
+    for job in job_instances:
+        job.examine_job()
+
+        if args.csv:
+            duration = rename_command_dict("duration", job.get_duration())
+            between_commands = rename_command_dict("between_commands",
+                                                   job.get_between_commands())
+
+            all_commands = {"job_id": job.job_id,
+                            **between_commands, **duration}
+            csv_raw_data.append(all_commands)
+
+    date = datetime.datetime.now().strftime('%Y%m%d-%X')
+    filename = "{}-job-ids.csv".format(date)
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['job_id', 'between_commands_mean',
+                      'between_commands_max', 'between_commands_min',
+                      'between_commands_total', 'duration_mean',
+                      'duration_max', 'duration_min', 'duration_total']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        writer.writerows(csv_raw_data)
+        print("CSV {} created.".format(filename))
 
 
 if __name__ == '__main__':
