@@ -110,3 +110,4 @@ ENV/
 .linter-py_*/
 
 .vscode
+*.csv
