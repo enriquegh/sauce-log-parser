@@ -10,24 +10,7 @@ import logging
 import csv
 import datetime
 
-
-def mean(num_list):
-    """Calculates mean of a list"""
-    i = 0
-    num_sum = 0.0
-    for item in num_list:
-        num_sum += item
-        i += 1
-
-    return num_sum/i
-
-
-def total(num_list):
-    """Calculates total of a list"""
-    num_sum = 0.0
-    for item in num_list:
-        num_sum += item
-    return num_sum
+import lib.utils as utils
 
 
 def read_log(log_name, command):
@@ -46,10 +29,10 @@ def read_log(log_name, command):
             if curr_command is not None:
                 commands.append(curr_command)
     if commands:  # Check if there's actual commands to process
-        print("  mean: {}".format(mean(commands)))
+        print("  mean: {}".format(utils.mean(commands)))
         print("  max: {}".format(max(commands)))
         print("  min: {}".format(min(commands)))
-        print("  total: {}".format(total(commands)))
+        print("  total: {}".format(utils.total(commands)))
     else:
         print("There is no commands to be parsed")
 
@@ -86,10 +69,6 @@ def build_job(job,
                            args.user,
                            args.save)
     return job_instance
-
-
-def rename_command_dict(name, dictionary):
-    return dict((name + "_" + k, v) for k, v in dictionary.items())
 
 
 def main(arguments=None):
@@ -146,9 +125,9 @@ def main(arguments=None):
         job.examine_job()
 
         if args.csv:
-            duration = rename_command_dict("duration", job.get_duration())
-            between_commands = rename_command_dict("between_commands",
-                                                   job.get_between_commands())
+            duration = utils.rename_command_dict("duration",
+                                                 job.get_duration())
+            between_commands = utils.rename_command_dict("between_commands", job.get_between_commands())  # noqa: E501
 
             all_commands = {"job_id": job.job_id,
                             **between_commands, **duration}
@@ -159,9 +138,9 @@ def main(arguments=None):
         filename = "{}-job-ids.csv".format(date)
         with open(filename, 'w', newline='') as csvfile:
             fieldnames = ['job_id', 'between_commands_mean',
-                        'between_commands_max', 'between_commands_min',
-                        'between_commands_total', 'duration_mean',
-                        'duration_max', 'duration_min', 'duration_total']
+                          'between_commands_max', 'between_commands_min',
+                          'between_commands_total', 'duration_mean',
+                          'duration_max', 'duration_min', 'duration_total']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
