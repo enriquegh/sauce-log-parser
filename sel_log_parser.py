@@ -154,18 +154,19 @@ def main(arguments=None):
                             **between_commands, **duration}
             csv_raw_data.append(all_commands)
 
-    date = datetime.datetime.now().strftime('%Y%m%d-%X')
-    filename = "{}-job-ids.csv".format(date)
-    with open(filename, 'w', newline='') as csvfile:
-        fieldnames = ['job_id', 'between_commands_mean',
-                      'between_commands_max', 'between_commands_min',
-                      'between_commands_total', 'duration_mean',
-                      'duration_max', 'duration_min', 'duration_total']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    if args.csv:
+        date = datetime.datetime.now().strftime('%Y%m%d-%X')
+        filename = "{}-job-ids.csv".format(date)
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['job_id', 'between_commands_mean',
+                        'between_commands_max', 'between_commands_min',
+                        'between_commands_total', 'duration_mean',
+                        'duration_max', 'duration_min', 'duration_total']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        writer.writeheader()
-        writer.writerows(csv_raw_data)
-        print("CSV {} created.".format(filename))
+            writer.writeheader()
+            writer.writerows(csv_raw_data)
+            print("CSV {} created.".format(filename))
 
 
 if __name__ == '__main__':
