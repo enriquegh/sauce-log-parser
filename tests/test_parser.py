@@ -1,5 +1,5 @@
 import sel_log_parser as sauce_parser
-import lib.utils as utils
+import utils
 import log_collector
 import os
 import pytest

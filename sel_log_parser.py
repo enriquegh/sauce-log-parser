@@ -10,7 +10,8 @@ import logging
 import csv
 import datetime
 
-import lib.utils as utils
+import utils
+import constants
 
 
 def read_log(log_name, command):
@@ -108,12 +109,7 @@ def main(arguments=None):
     if not args.region:
         args.region = 'us-west-1'
 
-    api_endpoint = {
-      'us-west-1': 'https://saucelabs.com/rest/v1',
-      'us-east-1': 'https://us-east-1.saucelabs.com/rest/v1',
-      'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1',
-      'eu-central-1': 'https://eu-central-1.saucelabs.com/rest/v1'
-    }[args.region]
+    api_endpoint = constants.API_ENDPOINT[args.region]
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
