@@ -1,4 +1,5 @@
 import sel_log_parser as sauce_parser
+import utils
 import log_collector
 import os
 import pytest
@@ -10,14 +11,14 @@ EMPTY_LOG = r"""[]"""
 
 def test_mean_command():
     num_list = [1.0, 2.0, 3.0, 4.0, 10.0, 14.0]
-    result = sauce_parser.mean(num_list)
+    result = utils.mean(num_list)
 
     assert result == 5.666666666666667
 
 
 def test_total_command():
     num_list = [1.0, 2.0, 3.0, 4.0, 10.0, 14.0]
-    result = sauce_parser.total(num_list)
+    result = utils.total(num_list)
 
     assert result == 34.0
 

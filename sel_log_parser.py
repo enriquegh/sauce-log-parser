@@ -7,25 +7,11 @@ import argparse
 import glob
 import sauce_job
 import logging
+import csv
+import datetime
 
-
-def mean(num_list):
-    """Calculates mean of a list"""
-    i = 0
-    num_sum = 0.0
-    for item in num_list:
-        num_sum += item
-        i += 1
-
-    return num_sum/i
-
-
-def total(num_list):
-    """Calculates total of a list"""
-    num_sum = 0.0
-    for item in num_list:
-        num_sum += item
-    return num_sum
+import utils
+import constants
 
 
 def read_log(log_name, command):
@@ -44,10 +30,10 @@ def read_log(log_name, command):
             if curr_command is not None:
                 commands.append(curr_command)
     if commands:  # Check if there's actual commands to process
-        print("  mean: {}".format(mean(commands)))
+        print("  mean: {}".format(utils.mean(commands)))
         print("  max: {}".format(max(commands)))
         print("  min: {}".format(min(commands)))
-        print("  total: {}".format(total(commands)))
+        print("  total: {}".format(utils.total(commands)))
     else:
         print("There is no commands to be parsed")
 
@@ -98,7 +84,7 @@ def main(arguments=None):
                             help="Sauce username.  Account Username of the"
                             " Test Owner that ran the session.")
     arg_parser.add_argument("-s", "--save",
-                            help="Save the output as a .log file in the cwd. "
+                            help="Save the output as a .log file in cwd. "
                             "Schema is log_session-id.log.",
                             action="store_true")
     arg_parser.add_argument("-r", "--region",
@@ -106,6 +92,10 @@ def main(arguments=None):
                             "(us-west-1, us-east-1, eu-central-1)")
     arg_parser.add_argument("-v", "--verbose",
                             help="Verbose flag to print at debug level",
+                            action="store_true")
+    arg_parser.add_argument("--csv",
+                            help="Save the output of all tests as csv in cwd. "
+                            "Schema is date_job-ids.csv",
                             action="store_true")
     arg_parser.add_argument("job_id", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
@@ -119,19 +109,39 @@ def main(arguments=None):
     if not args.region:
         args.region = 'us-west-1'
 
-    api_endpoint = {
-      'us-west-1': 'https://saucelabs.com/rest/v1',
-      'us-east-1': 'https://us-east-1.saucelabs.com/rest/v1',
-      'headless-test': 'https://headless-test.headless.saucelabs.com/rest/v1',
-      'eu-central-1': 'https://eu-central-1.saucelabs.com/rest/v1'
-    }[args.region]
+    api_endpoint = constants.API_ENDPOINT[args.region]
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
     job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
                      for job in args.job_id]
-    [job.examine_job() for job in job_instances]
+    csv_raw_data = []
+    for job in job_instances:
+        job.examine_job()
+
+        if args.csv:
+            duration = utils.rename_command_dict("duration",
+                                                 job.get_duration())
+            between_commands = utils.rename_command_dict("between_commands", job.get_between_commands())  # noqa: E501
+
+            all_commands = {"job_id": job.job_id,
+                            **between_commands, **duration}
+            csv_raw_data.append(all_commands)
+
+    if args.csv:
+        date = datetime.datetime.now().strftime('%Y%m%d-%X')
+        filename = "{}-job-ids.csv".format(date)
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['job_id', 'between_commands_mean',
+                          'between_commands_max', 'between_commands_min',
+                          'between_commands_total', 'duration_mean',
+                          'duration_max', 'duration_min', 'duration_total']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            writer.writerows(csv_raw_data)
+            print("CSV {} created.".format(filename))
 
 
 if __name__ == '__main__':
