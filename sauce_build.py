@@ -29,11 +29,13 @@ class Build():
     def get_job_list(self):
         return self.job_list
 
-    def fetch_job_ids(self, admin, access_key):
+    def get_job_ids(self, admin, access_key):
         url = self.URL_JOBS.format(api_endpoint=self.api_endpoint,
                                    build_id=self.build_id)
 
         resp = requests.get(url, auth=(admin, access_key))
+
+        # TODO: Check for pagination
 
         if resp.status_code == 400:
             raise BuildNotFound
@@ -41,3 +43,10 @@ class Build():
             raise SomethingWentWrong
 
         json_resp = resp.json()
+        tmp_job_list = json_resp['jobs']
+
+        self.job_list = [job['id'] for job in tmp_job_list]
+
+    def build_jobs(self):
+
+        return [sauce_job.Job(job_id) for job_id in self.job_list]
