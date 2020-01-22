@@ -4,14 +4,18 @@
 Small python script that analyzes the log.json file provided by a Sauce Labs test.
 
 It gets the time commands took to run and the time in between Sauce Labs sent a response and received another request.
-
 With those two metrics it gets the average, min, max and total of them.
 
 This can help determine if a "slow" test is because of Selenium commands/server issue or if there is latency in the connection
 
+**NOTE: There is a discrepancy between the total time posted on the Sauce Labs test details page and the total time of between_commands and duration.**
+
+This is because the log.json file (which is used by this script) only takes into account test time but does not take into account start up and processing time.
+
 ```
 python sel_log_parser.py -h
 usage: sel_log_parser.py [-h] [-a ADMIN] [-k ACCESS_KEY] [-u USER] [-s]
+                         [-r REGION] [-v] [--csv]
                          job_id [job_id ...]
 
 positional arguments:
@@ -25,11 +29,14 @@ optional arguments:
                         Sauce Admin access key. For Saucers only.
   -u USER, --user USER  Sauce username. Account Username of the Test Owner
                         that ran the session.
-  -s, --save            Save the output as a .log file in the cwd. Schema is
+  -s, --save            Save the output as a .log file in cwd. Schema is
                         log_session-id.log.
   -r REGION, --region REGION
                         Sauce region where test was performed(us-west-1, us-
-                        east-1)
+                        east-1, eu-central-1)
+  -v, --verbose         Verbose flag to print at debug level
+  --csv                 Save the output of all tests as csv in cwd. Schema is
+                        date_job-ids.csv
 ```
 
 ## Usage
@@ -62,7 +69,9 @@ between_commands:
 Manual Setup via git master branch:
 1. `cd` to a directory where you want the python tools/files.
 1. `git clone git@github.com:enriquegh/sauce-log-parser.git`
-1. `cd sauce-log-parser` and start looking at times!
+1. `cd sauce-log-parser`
+1. `pip install -r requirements`
+1. Start analysing tests!
 
 
 ## Contributing and Testing
