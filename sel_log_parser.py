@@ -64,11 +64,11 @@ def build_job(job,
               api_endpoint,
               args):
     job_instance = sauce_job.Job(job)
-    job_instance.fetch_log(api_endpoint,
-                           args.admin,
-                           args.access_key,
-                           args.user,
-                           args.save)
+    job_instance.parse_job_json(api_endpoint,
+                                args.admin,
+                                args.access_key,
+                                args.user,
+                                args.save)
     return job_instance
 
 

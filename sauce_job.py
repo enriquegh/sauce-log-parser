@@ -22,7 +22,7 @@ class Job(object):
         """Returns the duration dict"""
         return self.between_commands
 
-    def fetch_log(self, api_endpoint, admin, access_key, username, write):
+    def parse_job_json(self, api_endpoint, admin, access_key, username, write):
         """Downloads log"""
         try:
             response = log_collector.get_log(api_endpoint, admin, access_key,
