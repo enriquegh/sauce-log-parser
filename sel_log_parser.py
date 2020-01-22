@@ -97,8 +97,10 @@ def main(arguments=None):
                             help="Save the output of all tests as csv in cwd. "
                             "Schema is date_job-ids.csv",
                             action="store_true")
-    arg_parser.add_argument("job_id", nargs="+",
+    arg_parser.add_argument("--jobid", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
+    arg_parser.add_argument("-b", "--buildid",
+                            help="Sauce Labs Build ID to be examined.")
 
     args = arg_parser.parse_args(arguments)
 
@@ -115,7 +117,7 @@ def main(arguments=None):
         logging.basicConfig(level=logging.DEBUG)
 
     job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
-                     for job in args.job_id]
+                     for job in args.jobid]
     csv_raw_data = []
     for job in job_instances:
         job.examine_job()
