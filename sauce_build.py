@@ -15,7 +15,7 @@ class SomethingWentWrong(Exception):
 class Build():
     """docstring for Build."""
 
-    URL_BASE = "{api_endpoint}/builds/{build_id}/"
+    URL_BASE = "{api_endpoint}/builds/{build_id}"
     URL_JOBS = URL_BASE + "/jobs"
 
     def __init__(self, api_endpoint, username, build_id):
