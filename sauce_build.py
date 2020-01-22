@@ -18,9 +18,10 @@ class Build():
     URL_BASE = "{api_endpoint}/builds/{build_id}/"
     URL_JOBS = URL_BASE + "/jobs"
 
-    def __init__(self, api_endpoint, build_id):
+    def __init__(self, api_endpoint, username, build_id):
         self.api_endpoint = api_endpoint
         self.build_id = build_id
+        self.username = username
         self.job_list = []
 
     def get_build_id(self):
@@ -49,4 +50,5 @@ class Build():
 
     def build_jobs(self):
 
-        return [sauce_job.Job(job_id) for job_id in self.job_list]
+        return [sauce_job.Job(self.api_endpoint, self.username, job_id)
+                for job_id in self.job_list]

@@ -63,12 +63,9 @@ def is_log_downloaded(job_id):
 def build_job(job,
               api_endpoint,
               args):
-    job_instance = sauce_job.Job(job)
-    job_instance.parse_job_json(api_endpoint,
-                                args.admin,
-                                args.access_key,
-                                args.user,
-                                args.save)
+    job_instance = sauce_job.Job(api_endpoint, args.user, job)
+    job_instance.parse_job_json(args.admin, args.access_key, args.save)
+
     return job_instance
 
 
