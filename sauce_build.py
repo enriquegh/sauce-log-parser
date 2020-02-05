@@ -48,7 +48,11 @@ class Build():
 
         self.job_list = [job['id'] for job in tmp_job_list]
 
-    def build_jobs(self):
+    def build_jobs(self, admin, access_key, write):
+        jobs = []
+        for job_id in self.job_list:
+            job = sauce_job.Job(self.api_endpoint, self.username, job_id)
+            job.parse_job_json(admin, access_key, write)
 
-        return [sauce_job.Job(self.api_endpoint, self.username, job_id)
-                for job_id in self.job_list]
+            jobs.append(job)
+        return jobs

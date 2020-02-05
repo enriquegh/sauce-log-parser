@@ -6,6 +6,7 @@ import os.path
 import argparse
 import glob
 import sauce_job
+import sauce_build
 import logging
 import csv
 import datetime
@@ -69,6 +70,15 @@ def build_job(job,
     return job_instance
 
 
+def build_build(api_endpoint, user, build_id, args):
+    build_instance = sauce_build.Build(api_endpoint, user, build_id)
+    build_instance.get_job_ids(args.admin, args.access_key)
+
+    job_instances = build_instance.build_jobs(args.admin, args.access_key,
+                                              args.save)
+    return job_instances
+
+
 def main(arguments=None):
     """Main function"""
 
@@ -113,8 +123,19 @@ def main(arguments=None):
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
-    job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
-                     for job in args.jobid]
+    job_instances = []
+
+    if args.jobid:
+        job_instances.extend([build_job(job, api_endpoint=api_endpoint,
+                             args=args) for job in args.jobid])
+
+    # Checking for builds and adding it to job_instances
+    if args.buildid:
+        pass
+        build_job_instances = build_build(api_endpoint, args.user,
+                                          args.buildid, args)
+        job_instances.extend(build_job_instances)
+
     csv_raw_data = []
     for job in job_instances:
         job.examine_job()
