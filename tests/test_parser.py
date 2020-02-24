@@ -98,7 +98,8 @@ def test_incorrect_credentials(capsys):
     JOB_ID = "2h433-34bdba-3hrb3-3432"
     EXPECTED_OUTPUT_WRONG_CREDENTIALS = "Could not download job id {}" \
                                         .format(JOB_ID)
-    sauce_parser.main(["-u", "wrong_username", "-k", "BAD_KEY", JOB_ID])
+    sauce_parser.main(["-u", "wrong_username", "-k", "BAD_KEY",
+                       "-a", "fakeadmin", "--jobid", JOB_ID])
 
     out, error = capsys.readouterr()
 

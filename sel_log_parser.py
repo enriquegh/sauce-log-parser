@@ -6,6 +6,7 @@ import os.path
 import argparse
 import glob
 import sauce_job
+import sauce_build
 import logging
 import csv
 import datetime
@@ -63,13 +64,19 @@ def is_log_downloaded(job_id):
 def build_job(job,
               api_endpoint,
               args):
-    job_instance = sauce_job.Job(job)
-    job_instance.fetch_log(api_endpoint,
-                           args.admin,
-                           args.access_key,
-                           args.user,
-                           args.save)
+    job_instance = sauce_job.Job(api_endpoint, args.user, job)
+    job_instance.parse_job_json(args.admin, args.access_key, args.save)
+
     return job_instance
+
+
+def build_build(api_endpoint, user, build_id, args):
+    build_instance = sauce_build.Build(api_endpoint, user, build_id)
+    build_instance.get_job_ids(args.admin, args.access_key)
+
+    job_instances = build_instance.build_jobs(args.admin, args.access_key,
+                                              args.save)
+    return job_instances
 
 
 def main(arguments=None):
@@ -97,8 +104,10 @@ def main(arguments=None):
                             help="Save the output of all tests as csv in cwd. "
                             "Schema is date_job-ids.csv",
                             action="store_true")
-    arg_parser.add_argument("job_id", nargs="+",
+    arg_parser.add_argument("--jobid", nargs="+",
                             help="Sauce Labs Session ID to be examined.")
+    arg_parser.add_argument("-b", "--buildid",
+                            help="Sauce Labs Build ID to be examined.")
 
     args = arg_parser.parse_args(arguments)
 
@@ -114,8 +123,19 @@ def main(arguments=None):
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
-    job_instances = [build_job(job, api_endpoint=api_endpoint, args=args)
-                     for job in args.job_id]
+    job_instances = []
+
+    if args.jobid:
+        job_instances.extend([build_job(job, api_endpoint=api_endpoint,
+                             args=args) for job in args.jobid])
+
+    # Checking for builds and adding it to job_instances
+    if args.buildid:
+        pass
+        build_job_instances = build_build(api_endpoint, args.user,
+                                          args.buildid, args)
+        job_instances.extend(build_job_instances)
+
     csv_raw_data = []
     for job in job_instances:
         job.examine_job()

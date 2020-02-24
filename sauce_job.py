@@ -10,8 +10,10 @@ class Job(object):
     between_commands = {}
     data = None
 
-    def __init__(self, job_id):
+    def __init__(self, api_endpoint, username, job_id):
         super(Job, self).__init__()
+        self.api_endpoint = api_endpoint
+        self.username = username
         self.job_id = job_id
 
     def get_duration(self):
@@ -22,11 +24,12 @@ class Job(object):
         """Returns the duration dict"""
         return self.between_commands
 
-    def fetch_log(self, api_endpoint, admin, access_key, username, write):
+    def parse_job_json(self, admin, access_key, write):
         """Downloads log"""
         try:
-            response = log_collector.get_log(api_endpoint, admin, access_key,
-                                             username, self.job_id, write)
+            response = log_collector.get_log(self.api_endpoint, admin,
+                                             access_key, self.username,
+                                             self.job_id, write)
         except log_collector.AssetsNotFound:
             print("404 API response.  The assets for %s are no longer available\
 (> 30 days since test creation) or do not exist." % self.job_id)
