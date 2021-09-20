@@ -96,7 +96,7 @@ def main(arguments=None):
                             action="store_true")
     arg_parser.add_argument("-r", "--region",
                             help="Sauce region where test was performed"
-                            "(us-west-1, us-east-1, eu-central-1)")
+                            "(us-west-1, us-east-1, eu-central-1, apac-southeast-1)")
     arg_parser.add_argument("-v", "--verbose",
                             help="Verbose flag to print at debug level",
                             action="store_true")
