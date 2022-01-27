@@ -15,11 +15,8 @@ This is because the log.json file (which is used by this script) only takes into
 ```
 python sel_log_parser.py -h
 usage: sel_log_parser.py [-h] [-a ADMIN] [-k ACCESS_KEY] [-u USER] [-s]
-                         [-r REGION] [-v] [--csv]
-                         jobid [jobid ...]
-
-positional arguments:
-  jobid                Sauce Labs Session ID to be examined.
+                         [-r REGION] [-v] [--csv] [--jobid JOBID [JOBID ...]]
+                         [-b BUILDID]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -33,10 +30,14 @@ optional arguments:
                         log_session-id.log.
   -r REGION, --region REGION
                         Sauce region where test was performed(us-west-1, us-
-                        east-1, eu-central-1)
+                        east-1, eu-central-1, apac-southeast-1)
   -v, --verbose         Verbose flag to print at debug level
   --csv                 Save the output of all tests as csv in cwd. Schema is
                         date_job-ids.csv
+  --jobid JOBID [JOBID ...]
+                        Sauce Labs Session ID to be examined.
+  -b BUILDID, --buildid BUILDID
+                        Sauce Labs Build ID to be examined.
 ```
 
 ## Usage
