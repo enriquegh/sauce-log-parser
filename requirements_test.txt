@@ -1,5 +1,5 @@
 -r requirements.txt
 pytest==4.6.2
 pytest-cov==2.7.1
-codecov==2.0.15
+codecov==2.0.16
 requests-mock==1.7.0
